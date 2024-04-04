@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import datetime
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,16 +39,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #third party
     'rest_framework',
+    'rest_framework_simplejwt',
     'rest_framework.authtoken',
+    'corsheaders',
+    #internal apps
     'api',
     'news',
     'search',
+    'accounts',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -55,6 +63,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'barbershopbe.urls'
+
+CORS_URLS_REGEX = r'^/api/.*'
+CORS_ALLOWED_ORIGINS = []
+if DEBUG:
+    CORS_ALLOWED_ORIGINS = [
+        'http://127.0.0.1:xyzt',
+    ]
 
 TEMPLATES = [
     {
@@ -132,10 +147,20 @@ REST_FRAMEWORK ={
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'api.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
+}
+
+SIMPLE_JWT = {
+
+    'AUTH_HEADER_TYPES': ['Bearer'],
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(hours=1), #hours 1-3
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=1), #days 1
+    
 }

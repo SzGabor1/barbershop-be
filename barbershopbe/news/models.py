@@ -32,3 +32,12 @@ class News(models.Model):
     public = models.BooleanField(default=True)
     
     objects = NewsManager()
+    
+    def get_absolute_endpont(self):
+        return f'/api/news/{self.pk}/'
+    
+    @property
+    def endpoint(self):
+        return self.get_absolute_endpont()
+        
+    

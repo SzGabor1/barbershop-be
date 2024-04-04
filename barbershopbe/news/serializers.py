@@ -34,6 +34,7 @@ class NewsSerializer(serializers.ModelSerializer):
             'url',
             'edit_url',
             'pk',
+            'endpoint',
     #        'name',
             'title',
             'public',
