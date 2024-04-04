@@ -8,7 +8,7 @@ def enforce_csrf(request):
     """
     Enforce CSRF validation.
     """
-    check = CSRFCheck()
+    check = CSRFCheck(request)
     check.process_request(request)
     reason = check.process_view(request, None, (), {})
     if reason:
@@ -27,5 +27,5 @@ class CustomAuthentication(JWTAuthentication):
             return None
 
         validated_token = self.get_validated_token(raw_token)
-        #enforce_csrf(request)
+        enforce_csrf(request)
         return self.get_user(validated_token), validated_token

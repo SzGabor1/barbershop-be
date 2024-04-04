@@ -27,7 +27,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         
         # Set the CSRF token cookie
         response.set_cookie(
-            key='CSRF_COOKIE',
+            key='csrftoken',
             value=CSRF_COOKIE,
             domain=settings.CSRF_COOKIE_DOMAIN,
             path=settings.CSRF_COOKIE_PATH,
