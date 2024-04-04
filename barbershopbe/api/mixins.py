@@ -1,8 +1,11 @@
-from .permission import IsStaffEditorPermission
+from .permission import IsStaffEditorPermission, IsMemberPermission
 from rest_framework import permissions
 
 class StaffEditorPermissionMixin():
     permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
+    
+class MemberPermissionMixin():
+    permission_classes = [permissions.IsAuthenticated, IsMemberPermission]
     
 class UserQuerySetMixin():
     user_field = 'user'
@@ -15,4 +18,5 @@ class UserQuerySetMixin():
         if self.allow_staff_view and user.is_staff or user.is_superuser:
             return qs
         return qs.filter(**lookup_data)
+        
         

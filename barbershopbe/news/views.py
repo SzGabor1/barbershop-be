@@ -10,9 +10,10 @@ from .serializers import NewsSerializer
 from rest_framework import generics, mixins
 from .models import News
 from .serializers import NewsSerializer
-from api.mixins import StaffEditorPermissionMixin, UserQuerySetMixin
+from api.mixins import StaffEditorPermissionMixin, UserQuerySetMixin, MemberPermissionMixin
 
 class NewsModelMixin(
+    MemberPermissionMixin,
     StaffEditorPermissionMixin,
     UserQuerySetMixin,
     generics.GenericAPIView,
