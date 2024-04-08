@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'news',
     'search',
     'accounts',
+    'services',
 ]
 
 MIDDLEWARE = [
@@ -67,9 +68,8 @@ ROOT_URLCONF = 'barbershopbe.urls'
 CORS_URLS_REGEX = r'^/api/.*'
 CORS_ALLOWED_ORIGINS = []
 if DEBUG:
-    CORS_ALLOWED_ORIGINS = [
-        'http://127.0.0.1:xyzt',
-    ]
+    CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:5500']
+CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
     {
@@ -145,7 +145,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'api.authentication.CustomAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'api.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
@@ -158,7 +159,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ['Bearer'],
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(hours=1), # hours 1-3
-    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=1), # days 1
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=3), # days 1
     
     # custom
     "AUTH_COOKIE": "access_token",  # cookie name
