@@ -10,7 +10,7 @@ from api.validators import GroupValidator
 class ServiceModelMixin(
     MemberPermissionMixin,
     StaffEditorPermissionMixin,
-  #  UserQuerySetMixin,
+    #UserQuerySetMixin,
     generics.GenericAPIView,
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
@@ -33,9 +33,10 @@ class ServiceModelMixin(
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        
+        #Check that the input user belongs to the Worker group
         user = serializer.validated_data.get('user')
-        gv = GroupValidator('StaffNewsEditor')
-
+        gv = GroupValidator('Staff')
         gv(user)
         
         # If the user input group is valid, proceed with creation
