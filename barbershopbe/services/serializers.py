@@ -9,6 +9,7 @@ class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = [
+            'pk',
             'user',
             'name',
             'description',
@@ -21,6 +22,7 @@ class ServiceCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = [
+            'pk',
             'user',
             'name',
             'description',
