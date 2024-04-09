@@ -1,10 +1,10 @@
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import TimeSlot
 from .serializers import TimeSlotSerializer, TimeSlotCreateSerializer
 from api.mixins import StaffEditorPermissionMixin, MemberPermissionMixin, UserQuerySetMixin
-
+from rest_framework.views import APIView
 from api.validators import GroupValidator
 
 class TimeSlotModelMixin(
@@ -71,6 +71,7 @@ class TimeSlotUpdateView(StaffEditorPermissionMixin,
         
 timeSlot_update_view = TimeSlotUpdateView.as_view()
 
+
 class TimeSlotDestroyView(StaffEditorPermissionMixin, generics.DestroyAPIView):
     queryset = TimeSlot.objects.all()
     serializer_class = TimeSlotSerializer
@@ -80,3 +81,18 @@ class TimeSlotDestroyView(StaffEditorPermissionMixin, generics.DestroyAPIView):
         super().perform_destroy(instance)
         
 timeSlot_destroy_view = TimeSlotDestroyView.as_view()
+
+#Destroy multiple TimeSlot instances in range of start adn end dates
+class MultipleTimeSlotDestroyAPIView(StaffEditorPermissionMixin, APIView):
+
+    queryset = TimeSlot.objects.all() 
+    def post(self, request, *args, **kwargs):
+        start_date = request.data.get('start_date')
+        end_date = request.data.get('end_date')
+        
+        self.queryset.filter(start_date__lte=end_date, end_date__gte=start_date).delete()
+
+        
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+multipleTimeSlotDestroyAPIView = MultipleTimeSlotDestroyAPIView.as_view()

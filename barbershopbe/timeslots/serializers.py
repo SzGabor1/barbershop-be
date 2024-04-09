@@ -43,7 +43,7 @@ class TimeSlotCreateSerializer(serializers.ModelSerializer):
         time_slots = []
         current_date = start_date
         while current_date < end_date:
-            next_date = current_date + timedelta(minutes=timedelta_minutes)  # Use timedelta_minutes
+            next_date = current_date + timedelta(minutes=timedelta_minutes)
             time_slots.append((current_date, next_date))
             current_date = next_date
         
