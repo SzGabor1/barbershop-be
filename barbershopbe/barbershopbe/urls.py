@@ -25,4 +25,5 @@ urlpatterns = [
     path('api/v2/', include('barbershopbe.routers')),
     path('api/', include('accounts.urls')),
     path('api/services/', include('services.urls')),
+    path('api/timeslots/', include('timeslots.urls')),
 ]
