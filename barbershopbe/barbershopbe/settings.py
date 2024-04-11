@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'accounts',
     'services',
     'timeslots',
+    'appointments',
 ]
 
 MIDDLEWARE = [

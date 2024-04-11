@@ -7,7 +7,12 @@ class UserNewsInlineSerializer(serializers.Serializer):
 class UserPublicSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     username = serializers.CharField(read_only=True)
-
+    
+    
+class TimeSlotPublicSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    start_date = serializers.DateTimeField(read_only=True)
+    end_date = serializers.DateTimeField(read_only=True)
     
     # other_news = serializers.SerializerMethodField(read_only=True)
     
