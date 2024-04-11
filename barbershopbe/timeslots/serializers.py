@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import TimeSlot
 from api.serializers import UserPublicSerializer
-from datetime import timedelta
+from datetime import timedelta 
 
 class TimeSlotSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,7 +17,7 @@ class TimeSlotSerializer(serializers.ModelSerializer):
 from datetime import timedelta
 
 class TimeSlotCreateSerializer(serializers.ModelSerializer):
-    timedelta = serializers.IntegerField()
+    timedelta = serializers.IntegerField(write_only=True)  
     
     class Meta:
         model = TimeSlot
@@ -32,22 +32,31 @@ class TimeSlotCreateSerializer(serializers.ModelSerializer):
         user = data.get('user')
         start_date = data.get('start_date')
         end_date = data.get('end_date')
-        timedelta_minutes = data.get('timedelta', 30)
-        
+
         if not user:
             raise serializers.ValidationError('User field cannot be empty')
         
         if start_date > end_date:
             raise serializers.ValidationError('Start date must be before end date')
-        
-        time_slots = []
+
+        return data
+    
+    def create(self, validated_data):
+        user = validated_data.get('user')
+        start_date = validated_data.get('start_date')
+        end_date = validated_data.get('end_date')
+        timedelta_minutes = validated_data.pop('timedelta', 30)
         current_date = start_date
         while current_date < end_date:
+            if current_date + timedelta(minutes=timedelta_minutes) == end_date:
+                TimeSlot.objects.create(user=user, start_date=current_date, end_date=end_date)
+                return {'user': user, 'start_date': current_date, 'end_date': end_date}
             next_date = current_date + timedelta(minutes=timedelta_minutes)
-            time_slots.append((current_date, next_date))
+            
+            # Check if a TimeSlot with the same start and end dates already exists
+            if not TimeSlot.objects.filter(user=user, start_date=current_date, end_date=next_date).exists():
+                # Create TimeSlot instance only if it doesn't exist already
+                if next_date != end_date or current_date + timedelta(minutes=timedelta_minutes) == end_date:
+                    TimeSlot.objects.create(user=user, start_date=current_date, end_date=next_date)
+                #   print(f'Created TimeSlot for {user} from {current_date} to {next_date}')
             current_date = next_date
-        
-        for slot_start, slot_end in time_slots:
-            TimeSlot.objects.create(user=user, start_date=slot_start, end_date=slot_end)
-        
-        return data
