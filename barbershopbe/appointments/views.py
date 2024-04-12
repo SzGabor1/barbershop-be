@@ -12,7 +12,7 @@ class AppointmentModelMixin(
     StaffEditorPermissionMixin,
     #UserQuerySetMixin,
     generics.GenericAPIView,
-    mixins.ListModelMixin,
+    #mixins.ListModelMixin,
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
 ):
@@ -20,8 +20,6 @@ class AppointmentModelMixin(
     lookup_field = 'pk'
     
     def get_serializer_class(self):
-        if self.request.method == 'POST':
-            return AppointmentCreateSerializer
         return AppointmentSerializer
     
     def get(self, request, *args, **kwargs):
@@ -29,15 +27,33 @@ class AppointmentModelMixin(
         if pk:
             return self.retrieve(request, *args, **kwargs)
         return self.list(request, *args, **kwargs)
+        
+appointment_model_mixin = AppointmentModelMixin.as_view()
+
+
+
+class AppointmentCreateMixin(
+    generics.GenericAPIView,
+    mixins.CreateModelMixin,
+):
+    queryset = Appointment.objects.all()
+    lookup_field = 'pk'
+    
+    def get_serializer_class(self):
+        return AppointmentCreateSerializer
     
     def post(self, request, *args, **kwargs):
-    # If neccesarry email could be equal to the user email
         return self.create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save()
-        
-appointment_model_mixin = AppointmentModelMixin.as_view()
+
+    def create(self, request, *args, **kwargs):
+        # Call the base create method to perform object creation
+        return super().create(request, *args, **kwargs)
+
+appointment_create_mixin = AppointmentCreateMixin.as_view()
+
 
 
 class AppointmentUpdateView(StaffEditorPermissionMixin,
