@@ -38,3 +38,32 @@ class AppointmentModelMixin(
         serializer.save()
         
 appointment_model_mixin = AppointmentModelMixin.as_view()
+
+
+class AppointmentUpdateView(StaffEditorPermissionMixin,
+                        generics.RetrieveUpdateAPIView):
+    queryset = Appointment.objects.all()
+    serializer_class = AppointmentCreateSerializer
+    lookup_field = 'pk'
+    
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        instance.save()
+        
+    def update(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        return super().update(request, *args, **kwargs)
+        
+appointment_update_view = AppointmentUpdateView.as_view()
+
+class AppointmentDestroyView(StaffEditorPermissionMixin, generics.DestroyAPIView):
+    queryset = Appointment.objects.all()
+    serializer_class = AppointmentSerializer
+    lookup_field = 'pk'
+    
+    def preform_destroy(self, instance):
+        super().perform_destroy(instance)
+        
+appointment_destroy_view = AppointmentDestroyView.as_view()
