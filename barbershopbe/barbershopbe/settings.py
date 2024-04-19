@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-2dyg#d0$riqqmc0p@orup0_xp5!2c=@vwdw^e73%o_@*l1*mqe
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','localhost']
 
 
 # Application definition
@@ -70,7 +70,7 @@ ROOT_URLCONF = 'barbershopbe.urls'
 CORS_URLS_REGEX = r'^/api/.*'
 CORS_ALLOWED_ORIGINS = []
 if DEBUG:
-    CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:5500']
+    CORS_ALLOWED_ORIGINS = ['http://localhost:5174']
 CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
@@ -164,10 +164,11 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=3), # days 1
     
     # custom
-    "AUTH_COOKIE": "access_token",  # cookie name
-    "AUTH_COOKIE_DOMAIN": None,  # specifies domain for which the cookie will be sent
-    "AUTH_COOKIE_SECURE": False,  # restricts the transmission of the cookie to only occur over secure (HTTPS) connections. 
-    "AUTH_COOKIE_HTTP_ONLY": True,  # prevents client-side js from accessing the cookie
-    "AUTH_COOKIE_PATH": "/",  # URL path where cookie will be sent
-    "AUTH_COOKIE_SAMESITE": "Lax",  # specifies whether the cookie should be sent in cross site requests
+# Custom configuration for cookie settings
+    "AUTH_COOKIE": "access_token",  # Cookie name
+    "AUTH_COOKIE_DOMAIN": "localhost",      # Specifies domain for which the cookie will be sent
+    "AUTH_COOKIE_SECURE": True,      # Restricts the transmission of the cookie to only occur over secure (HTTPS) connections
+    "AUTH_COOKIE_HTTP_ONLY": True,   # Prevents client-side JavaScript from accessing the cookie
+    "AUTH_COOKIE_PATH": "/",         # URL path where cookie will be sent
+    "AUTH_COOKIE_SAMESITE": "strict", 
 }
