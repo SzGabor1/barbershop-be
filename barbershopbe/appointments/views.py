@@ -7,14 +7,14 @@ from api.mixins import StaffEditorPermissionMixin, MemberPermissionMixin, UserQu
 from rest_framework.views import APIView
 from api.validators import GroupValidator
 
+
 class AppointmentModelMixin(
     MemberPermissionMixin,
     StaffEditorPermissionMixin,
-    #UserQuerySetMixin,
     generics.GenericAPIView,
-    #mixins.ListModelMixin,
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,  # Include ListModelMixin
 ):
     queryset = Appointment.objects.all()
     lookup_field = 'pk'
@@ -26,7 +26,8 @@ class AppointmentModelMixin(
         pk = kwargs.get('pk')
         if pk:
             return self.retrieve(request, *args, **kwargs)
-        return self.list(request, *args, **kwargs)
+        else:
+            return self.list(request, *args, **kwargs)  # Handle list retrieval
         
 appointment_model_mixin = AppointmentModelMixin.as_view()
 

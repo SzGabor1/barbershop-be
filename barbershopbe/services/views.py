@@ -35,9 +35,9 @@ class ServiceModelMixin(
         serializer.is_valid(raise_exception=True)
         
         #Check that the input user belongs to the Worker group
-        user = serializer.validated_data.get('user')
+        employee = serializer.validated_data.get('employee')
         gv = GroupValidator('Staff')
-        gv(user)
+        gv(employee)
         
         # If the user input group is valid, proceed with creation
         return self.create(request, *args, **kwargs)
@@ -62,9 +62,9 @@ class ServiceUpdateView(StaffEditorPermissionMixin,
         serializer.is_valid(raise_exception=True)
         
         # Check that the input user belongs to the Worker group
-        user = serializer.validated_data.get('user')
+        employee = serializer.validated_data.get('employee')
         gv = GroupValidator('Staff')
-        gv(user)
+        gv(employee)
         
         # If the user input group is valid, proceed with update
         return super().update(request, *args, **kwargs)

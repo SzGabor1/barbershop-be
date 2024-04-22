@@ -5,12 +5,12 @@ from api.serializers import UserPublicSerializer
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-    user = UserPublicSerializer(read_only=True)
+    employee = UserPublicSerializer(read_only=True)
     class Meta:
         model = Service
         fields = [
             'pk',
-            'user',
+            'employee',
             'name',
             'description',
             'price',
@@ -19,11 +19,16 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class ServiceCreateSerializer(serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        queryset = self.fields['employee'].queryset
+        self.fields['employee'].queryset = queryset.filter(groups__name='Staff')
+        
     class Meta:
         model = Service
         fields = [
             'pk',
-            'user',
+            'employee',
             'name',
             'description',
             'price',

@@ -6,6 +6,7 @@ from rest_framework.exceptions import NotFound
 from api.serializers import UserPublicSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from django.contrib.auth.models import Group
 
 
 class RegisterView(generics.CreateAPIView):
@@ -14,7 +15,7 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
 
-class GetUser(generics.RetrieveAPIView):
+class GetUserView(generics.RetrieveAPIView):
     authentication_classes = (JWTAuthentication,)
 
     def get(self, request, *args, **kwargs):
@@ -33,3 +34,12 @@ class GetUser(generics.RetrieveAPIView):
         serializer = UserPublicSerializer(user)
 
         return Response(serializer.data)
+    
+class GetEmployeeView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserPublicSerializer
+    
+    def get_queryset(self):
+
+        employee_group = Group.objects.get(name='Staff')
+        return employee_group.user_set.all()

@@ -71,6 +71,7 @@ CORS_URLS_REGEX = r'^/api/.*'
 CORS_ALLOWED_ORIGINS = []
 if DEBUG:
     CORS_ALLOWED_ORIGINS = ['http://localhost:5173','http://localhost:5174']
+    
 CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
@@ -160,7 +161,7 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ['Bearer'],
-    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(hours=1), # hours 1-3
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=1), # hours 1-3
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=3), # days 1
     
     # custom
