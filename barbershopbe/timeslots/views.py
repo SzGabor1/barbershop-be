@@ -8,8 +8,6 @@ from rest_framework.views import APIView
 from api.validators import GroupValidator
 
 class TimeSlotModelMixin(
-    MemberPermissionMixin,
-    StaffEditorPermissionMixin,
     #UserQuerySetMixin,
     generics.GenericAPIView,
     mixins.ListModelMixin,
@@ -28,9 +26,25 @@ class TimeSlotModelMixin(
         pk = kwargs.get('pk')
         if pk:
             return self.retrieve(request, *args, **kwargs)
-        return self.list(request, *args, **kwargs)
+        try:
+            start_date = request.data.get('start_date')
+            end_date = request.data.get('end_date')
+            queryset = self.queryset.filter(start_date__lte=end_date, end_date__gte=start_date)
+            print(queryset)
+            #return self.list(request, *args, **kwargs)
+            return Response(self.get_serializer(queryset, many=True).data)
+        except:
+            print('No start_date or end_date')
+            return self.list(request, *args, **kwargs)
+        
     
     def post(self, request, *args, **kwargs):
+        #check request user is in the Worker group
+        user = request.data.get('user')
+        gv = GroupValidator('Staff')
+        gv(user)
+        
+        
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         

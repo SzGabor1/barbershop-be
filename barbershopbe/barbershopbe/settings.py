@@ -70,7 +70,7 @@ ROOT_URLCONF = 'barbershopbe.urls'
 CORS_URLS_REGEX = r'^/api/.*'
 CORS_ALLOWED_ORIGINS = []
 if DEBUG:
-    CORS_ALLOWED_ORIGINS = ['http://localhost:5174']
+    CORS_ALLOWED_ORIGINS = ['http://localhost:5173','http://localhost:5174']
 CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
@@ -155,7 +155,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 100,
 }
 
 SIMPLE_JWT = {
