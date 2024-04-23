@@ -47,6 +47,21 @@ class ServiceModelMixin(
         
 Service_model_mixin = ServiceModelMixin.as_view()
 
+
+class ServiceEmployeeListView(generics.ListAPIView):
+    serializer_class = ServiceSerializer
+
+    def get_queryset(self):
+        employee_id = self.request.query_params.get('employee_id')
+        if employee_id:
+            queryset = Service.objects.filter(employee_id=employee_id)
+            return queryset
+        else:
+            return Service.objects.none()
+    
+    
+service_employee_list_view = ServiceEmployeeListView.as_view()
+
 class ServiceUpdateView(StaffEditorPermissionMixin,
                         generics.RetrieveUpdateAPIView):
     queryset = Service.objects.all()
