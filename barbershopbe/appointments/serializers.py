@@ -63,7 +63,6 @@ class AppointmentCreateSerializer(serializers.ModelSerializer):
             'service',
             'email',
             'phone',
-         #   'employee',
             'notification',
             'timeslot',
             'token'

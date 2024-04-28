@@ -6,7 +6,7 @@ from .serializers import TimeSlotSerializer, TimeSlotCreateSerializer
 from api.mixins import StaffEditorPermissionMixin, MemberPermissionMixin, UserQuerySetMixin
 from rest_framework.views import APIView
 from api.validators import GroupValidator
-
+from appointments.models import Appointment
 class TimeSlotModelMixin(
     #UserQuerySetMixin,
     generics.GenericAPIView,
@@ -69,12 +69,21 @@ class TimeSlotFilteredView(generics.ListAPIView):
         if start_date_param and end_date_param:
             start_date = start_date_param
             end_date = end_date_param
-            queryset = self.queryset.filter(user_id =employee_id, start_date__lte=end_date, end_date__gte=start_date)
+            queryset = self.queryset.filter(user_id=employee_id, start_date__lte=end_date, end_date__gte=start_date)
+            
+            
+            # return only those timeslots that are not related to any appointments
+            queryset = queryset.exclude(appointment__isnull=False)
+            
+            
+            
             return queryset
         else:
             return self.queryset.none()
 
 timeslot_filtered_view = TimeSlotFilteredView.as_view()
+
+
 
 
 
