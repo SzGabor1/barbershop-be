@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  django:
+    container_name: barbershop-be
+    image: barbershop-be
+    restart: always
+    build: .
+    ports:
+      - "8002:8002"

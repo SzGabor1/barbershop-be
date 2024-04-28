@@ -27,8 +27,10 @@ SECRET_KEY = 'django-insecure-2dyg#d0$riqqmc0p@orup0_xp5!2c=@vwdw^e73%o_@*l1*mqe
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost']
-
+ALLOWED_HOSTS = [
+    'barbershop-be.szgabor-dev.hu',
+    'barbershop.szgabor-dev.hu',
+]
 
 # Application definition
 
@@ -68,9 +70,22 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'barbershopbe.urls'
 
 CORS_URLS_REGEX = r'^/api/.*'
-CORS_ALLOWED_ORIGINS = []
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://barbershop-be.szgabor-dev.hu',
+    'https://barbershop-be.szgabor-dev.hu',
+    'http://barbershop.szgabor-dev.hu',
+    'https://barbershop.szgabor-dev.hu',
+]
+
+# CORS_ALLOWED_ORIGINS = [
+#     'https://barbershop.szgabor-dev.hu',
+#     'https://barbershop-be.szgabor-dev.hu'
+# ]
 if DEBUG:
-    CORS_ALLOWED_ORIGINS = ['http://localhost:5173','http://localhost:5174']
+    CORS_ALLOWED_ORIGINS = []
     
 CORS_ALLOW_CREDENTIALS = True
 
