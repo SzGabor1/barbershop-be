@@ -3,7 +3,6 @@ from . import views
 
 
 urlpatterns = [
-    #admin specific the full list of appointments
     path('listall/', views.appointment_model_mixin, name='appointment-list'),
     path('', views.appointment_create_mixin, name='appointment-create'),
     path('<int:pk>/', views.appointment_model_mixin, name='appointment-detail'),

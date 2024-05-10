@@ -6,7 +6,7 @@ from .serializers import AppointmentSerializer, AppointmentCreateSerializer
 from api.mixins import StaffEditorPermissionMixin, MemberPermissionMixin, UserQuerySetMixin
 from rest_framework.views import APIView
 from api.validators import GroupValidator
-
+from rest_framework.permissions import AllowAny
 
 class AppointmentModelMixin(
     MemberPermissionMixin,
@@ -27,7 +27,7 @@ class AppointmentModelMixin(
         if pk:
             return self.retrieve(request, *args, **kwargs)
         else:
-            return self.list(request, *args, **kwargs)  # Handle list retrieval
+            return self.list(request, *args, **kwargs)
         
 appointment_model_mixin = AppointmentModelMixin.as_view()
 
@@ -37,6 +37,7 @@ class AppointmentCreateMixin(
     generics.GenericAPIView,
     mixins.CreateModelMixin,
 ):
+    permission_classes = [AllowAny]
     queryset = Appointment.objects.all()
     lookup_field = 'pk'
     

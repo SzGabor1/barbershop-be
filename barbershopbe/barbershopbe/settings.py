@@ -30,6 +30,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'barbershop-be.szgabor-dev.hu',
     'barbershop.szgabor-dev.hu',
+    'localhost',
+    '127.0.0.1'
 ]
 
 # Application definition
@@ -78,6 +80,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://barbershop-be.szgabor-dev.hu',
     'http://barbershop.szgabor-dev.hu',
     'https://barbershop.szgabor-dev.hu',
+    'http://localhost:5173',
 ]
 
 # CORS_ALLOWED_ORIGINS = [
