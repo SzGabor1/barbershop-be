@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'services',
     'timeslots',
     'appointments',
+    'gallery',
 ]
 
 MIDDLEWARE = [
